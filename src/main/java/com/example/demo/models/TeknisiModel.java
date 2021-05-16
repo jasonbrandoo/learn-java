@@ -1,13 +1,12 @@
 package com.example.demo.models;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class TeknisiModel {
     private Integer id;
+
+    @ApiModelProperty(notes = "Nama teknisi", name = "nama", required = true, value = "Helia")
     private String nama;
-    
-    public TeknisiModel(Integer id, String nama) {
-        this.id = id;
-        this.nama = nama;
-    }
 
     public TeknisiModel(String nama) {
         this.nama = nama;

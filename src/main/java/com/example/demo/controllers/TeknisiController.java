@@ -37,31 +37,32 @@ public class TeknisiController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Object> findOneTeknisi(@PathVariable(value = "id") Integer id){
-        try {
-            TeknisiModel teknisiModel = teknisiService.findOneTeknisi(id);
+    public ResponseEntity<Object> findOneTeknisi(@PathVariable(value = "id") Integer id) {
+        TeknisiModel teknisiModel = teknisiService.findOneTeknisi(id);
+        if (teknisiModel != null) {
             return new ResponseEntity<>(teknisiModel, HttpStatus.OK);
-        } catch (Exception e) {
+        } else {
             message.setMessage("Teknisi not found");
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping(path = "/create")
-    public ResponseEntity<Object> create(@RequestBody TeknisiModel teknisiModel){
+    public ResponseEntity<Object> create(@RequestBody TeknisiModel teknisiModel) {
         teknisiService.createTeknisi(teknisiModel);
-        return new ResponseEntity<>(HttpStatus.OK);
+        message.setMessage("Data berhasil dibuat");
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @PutMapping(path = "/update")
-    public ResponseEntity<Object> updateTeknisi(@RequestBody TeknisiModel teknisiModel){
-        teknisiService.updateTeknisi(teknisiModel);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> updateTeknisi(@RequestBody TeknisiModel teknisiModel) {
+        String result = teknisiService.updateTeknisi(teknisiModel);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
+
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Object> deleteTeknisi(@PathVariable(value = "id") Integer id){
-        teknisiService.deleteTeknisi(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> deleteTeknisi(@PathVariable(value = "id") Integer id) {
+        String teknisiModel = teknisiService.deleteTeknisi(id);
+        return new ResponseEntity<>(teknisiModel, HttpStatus.OK);
     }
 }

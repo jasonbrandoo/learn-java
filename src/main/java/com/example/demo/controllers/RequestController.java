@@ -37,36 +37,37 @@ public class RequestController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Object> findOneRequest(@PathVariable(value = "id") Integer id){
-        try {
-            RequestModel requestModel = requestService.findOneRequest(id);
+    public ResponseEntity<Object> findOneRequest(@PathVariable(value = "id") Integer id) {
+        RequestModel requestModel = requestService.findOneRequest(id);
+        if (requestModel != null) {
             return new ResponseEntity<>(requestModel, HttpStatus.OK);
-        } catch (Exception e) {
+        } else {
             message.setMessage("Request not found");
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping(path = "/create")
-    public ResponseEntity<Object> createRequest(@RequestBody RequestModel requestModel){
+    public ResponseEntity<Object> createRequest(@RequestBody RequestModel requestModel) {
         int insert = requestService.createRequest(requestModel);
-        if (insert == 0){
+        if (insert == 0) {
             message.setMessage("Sorry technician with that id not found");
             return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        message.setMessage("Data berhasil dibuat");
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @PutMapping(path = "/update")
-    public ResponseEntity<Object> updateTeknisi(@RequestBody RequestModel requestModel){
-        requestService.updateRequest(requestModel);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> updateTeknisi(@RequestBody RequestModel requestModel) {
+        String result = requestService.updateRequest(requestModel);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
+
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Object> deleteTeknisi(@PathVariable(value = "id") Integer id){
-        requestService.deleteRequest(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> deleteTeknisi(@PathVariable(value = "id") Integer id) {
+        String result = requestService.deleteRequest(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
+
 }
