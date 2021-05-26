@@ -1,7 +1,6 @@
 package com.example.demo.configurations.jwt;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -17,15 +16,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-public class UsernameAndPasswordFilter extends UsernamePasswordAuthenticationFilter {
+    private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
 
-    AuthenticationManager authenticationManager;
-
-    public UsernameAndPasswordFilter(AuthenticationManager authenticationManager) {
+    public AuthenticationFilter(AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
         this.authenticationManager = authenticationManager;
+        this.jwtProvider = jwtProvider;
+        setFilterProcessesUrl("/api/v1/login");
     }
 
     @Override
@@ -46,10 +45,7 @@ public class UsernameAndPasswordFilter extends UsernamePasswordAuthenticationFil
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
-        String key = "securesecuresecuresecuresecuresecuresecuresecure";
-        String token = Jwts.builder().setSubject(authResult.getName()).claim("authorities", authResult.getAuthorities())
-                .setIssuedAt(new Date()).signWith(Keys.hmacShaKeyFor(key.getBytes())).compact();
+        String token = jwtProvider.generated(authResult.getName());
         response.addHeader("Authorization", token);
     }
-
 }

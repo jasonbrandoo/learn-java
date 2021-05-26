@@ -24,7 +24,6 @@ public class DemoController {
 
     @PostMapping(value = "/upload")
     public ResponseEntity<Object> uploadFile(@RequestBody MultipartFile file) {
-        // TODO: process POST request
         String message = "";
         System.out.println(file.getOriginalFilename());
         try {
@@ -38,7 +37,6 @@ public class DemoController {
             System.out.println(base.toString());
             return ResponseEntity.status(HttpStatus.OK).body(message);
         } catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e);
             message = "Could not upload the file: " + file.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
