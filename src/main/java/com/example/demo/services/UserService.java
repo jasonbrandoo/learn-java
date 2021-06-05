@@ -1,6 +1,10 @@
 package com.example.demo.services;
 
-import com.example.demo.models.UsersModel;
+import java.util.List;
+
+import com.example.demo.models.UserModel;
+import com.example.demo.utils.UserMapper;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,12 +19,18 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public int insert(UsersModel usersModel) {
+    public int insert(UserModel userModel) {
         String sql = "INSERT INTO users(username, password) VALUES (?, ?)";
-        String username = usersModel.getUsername();
-        String password = usersModel.getPassword();
+        String username = userModel.getUsername();
+        String password = userModel.getPassword();
         String encodedPassword = passwordEncoder.encode(password);
         int isCreate = jdbcTemplate.update(sql, new Object[] { username, encodedPassword });
         return isCreate;
+    }
+
+    public UserModel findOne(String username) {
+        String sql = "SELECT username, password FROM users WHERE username = ?";
+        List<UserModel> user = jdbcTemplate.query(sql, new UserMapper(), username);
+        return user.get(0);
     }
 }

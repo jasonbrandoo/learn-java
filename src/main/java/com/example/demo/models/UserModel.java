@@ -2,17 +2,17 @@ package com.example.demo.models;
 
 import java.io.Serializable;
 
-public class UsersModel implements Serializable {
+public class UserModel implements Serializable {
     private long id;
     private String username;
     private String password;
 
-    public UsersModel(String username, String password) {
+    public UserModel(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-    public UsersModel() {
+    public UserModel() {
 
     }
 

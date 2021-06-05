@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.demo.models.UsersModel;
+import com.example.demo.models.UserModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,7 +31,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         try {
-            UsersModel readValue = new ObjectMapper().readValue(request.getInputStream(), UsersModel.class);
+            UserModel readValue = new ObjectMapper().readValue(request.getInputStream(), UserModel.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(readValue.getUsername(),
                     readValue.getPassword());
             Authentication authenticate = authenticationManager.authenticate(authentication);
